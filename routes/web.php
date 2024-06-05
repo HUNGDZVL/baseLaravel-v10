@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\HomeController;
+use App\Models\User;
 /*
 
 |--------------------------------------------------------------------------
@@ -39,7 +40,20 @@ use App\Http\Controllers\HomeController;
 //     });
 // });
 
+// test models 
+Route::get('/test', function () {
+    // Lấy dữ liệu từ cơ sở dữ liệu mặc định (mysql)
+    $user = User::find(1);
+    // Lấy dữ liệu từ cơ sở dữ liệu thứ hai (pgsql)
+    return response()->json([
+        'result' => 'success',
+        'message' => 'Thành công',
+        'data' => $user,
+    ], 200);
+});
 
 Route::get('/', [HomeController::class, 'indexHome']);
 Route::get('{any}', [HomeController::class, 'index'])->name('index');
+
+// config auth router
 Auth::routes();
