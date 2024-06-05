@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+//Service
+use App\Services\BaseService;
 
 class HomeController extends Controller
 {
@@ -16,8 +18,15 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    // khởi tạo contruc injection
+    private $baseService;
+    private $modelUser;
+    public function __construct(BaseService $baseService, User $modelUser)
     {
+        // sử dụng service 
+        $this->baseService = $baseService;
+        // sử dụng model
+        $this->modelUser = $modelUser;
         // $this->middleware('auth');
     }
 
@@ -39,6 +48,12 @@ class HomeController extends Controller
     // load trang home
     public function indexHome()
     {
+        // sử dụng service design patten DI
+        return $this->baseService->responsev2("success", "OKi service design", 200, true);
+        die;
+        // sử dụng base Method trong Class Controller 
+        return $this->responsebc("error", "404 Not Found", 200);
+        die;
         return view("dashboard-crm");
     }
 

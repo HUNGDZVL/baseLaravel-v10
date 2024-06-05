@@ -10,4 +10,14 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    // Cấu hình base Method
+    public function responsebc($result, $message, $statusCode, $data = [])
+    {
+        return response()->json([
+            'result' => $result,
+            'message' => $message,
+            'data' => $data ?: "",
+        ], $statusCode);
+    }
 }
