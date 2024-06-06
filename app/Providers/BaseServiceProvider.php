@@ -12,7 +12,7 @@ class BaseServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('responseService', function ($app) {
+        $this->app->singleton('BaseService', function ($app) {
             return new BaseService();
         });
     }
