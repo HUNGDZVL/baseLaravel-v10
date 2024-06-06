@@ -51,7 +51,10 @@ Route::get('/test', function () {
         'data' => $user,
     ], 200);
 });
+// test service
+Route::get('/test-service', [HomeController::class, 'service']);
 
+// main routes
 Route::get('/', [HomeController::class, 'indexHome']);
 Route::get('{any}', [HomeController::class, 'index'])->name('index');
 

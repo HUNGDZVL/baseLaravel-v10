@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,6 +9,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 //Service
 use App\Services\BaseService;
+use App\Models\User;
+use App\Services\AccountService;
 
 class HomeController extends Controller
 {
@@ -21,13 +22,15 @@ class HomeController extends Controller
     // khởi tạo contruc injection
     private $baseService;
     private $modelUser;
-    public function __construct(BaseService $baseService, User $modelUser)
+    private $AccountService;
+    public function __construct(BaseService $baseService, User $modelUser, AccountService $AccountService)
     {
         // sử dụng service 
         $this->baseService = $baseService;
         // sử dụng model
         $this->modelUser = $modelUser;
         // $this->middleware('auth');
+        $this->AccountService = $AccountService;
     }
 
     /**
@@ -48,13 +51,24 @@ class HomeController extends Controller
     // load trang home
     public function indexHome()
     {
-        // sử dụng service design patten DI
-        return $this->baseService->responsev2("success", "OKi service design", 200, true);
-        die;
-        // sử dụng base Method trong Class Controller 
-        return $this->responsebc("error", "404 Not Found", 200);
-        die;
+
         return view("dashboard-crm");
+    }
+    // sử dụng service
+    public function service()
+    {
+        // sử dụng service design patten DI
+        // return $this->baseService->responsebc("success", "OKi service design", 200, true);
+        // die;
+        // sử dụng base Method trong Class Controller
+        // lấy dữ liệu từ models, sử dụng method base
+        // $data = $this->modelUser::find(1); // query base
+        // query ORM
+        // $data = $this->modelUser->select_array('tbl_account', ['*']);
+        // query Service
+        $data = $this->AccountService->getAllUsers();
+        return $this->responsebc("success", "Data OK", 200, $data);
+        die;
     }
 
 

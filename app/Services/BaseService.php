@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 class BaseService
 {
 
-    public static function responsev2($result, $message, $statusCode, $data = []): JsonResponse
+    public static function responsebc($result, $message, $statusCode, $data = []): JsonResponse
     {
         return response()->json([
             'result' => $result,
