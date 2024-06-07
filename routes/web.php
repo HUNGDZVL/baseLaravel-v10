@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\HomeController;
 use App\Models\User;
@@ -27,8 +28,8 @@ use App\Models\User;
 // Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 
-// Định nghĩa route nhóm 'Backend'
-// Route::prefix('backend')->group(function () {
+// Định nghĩa route nhóm 'Cpanel'
+// Route::prefix('cpanel')->group(function () {
 
 //     // Route cho logout
 //     Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
@@ -36,7 +37,7 @@ use App\Models\User;
 
 //     // Nhóm route 'dashboard'
 //     Route::prefix('dashboard')->middleware('auth')->group(function () {
-//         Route::get('/', [DashboardController::class, 'index']);
+//         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 //     });
 // });
 
@@ -55,7 +56,81 @@ Route::get('/test', function () {
 Route::get('/test-service', [HomeController::class, 'service']);
 
 // main routes
-Route::get('/', [HomeController::class, 'indexHome']);
+Route::get('/', [HomeController::class, 'indexHome'])->name('home');
+
+//middleware routes
+Route::get('/checkHome', [HomeController::class, 'indexHome'])->name('indexHome')->middleware('checkpermission');
+// option routes
+
+Route::get("/form", function () {
+    $token = csrf_token();
+    return response()->json(['token' => $token]);
+});
+
+// truyền thêm name="_token" value ="<?= csrf_token>"
+Route::post("/form", function () {
+    // Lấy dữ liệu từ form data
+    $name = request('name');
+    $email = request('age');
+
+    // Xử lý dữ liệu, ví dụ:
+    return "Hello $name, your age is $email , send by POST";
+});
+
+
+
+// truyền thêm name="_method" value ="PUT"
+// truyền thêm name="_token" value ="<?= csrf_token>"
+Route::put("form", function () {
+    // Lấy dữ liệu từ form data
+    $name = request('name');
+    $email = request('age');
+
+    // Xử lý dữ liệu, ví dụ:
+    return "Hello $name, your age is $email , send by PUT";
+});
+
+// truyền thêm name="_method" value ="PATCH"
+// truyền thêm name="_token" value ="<?= csrf_token>"
+Route::patch("form", function () {
+    return "Method patch";
+});
+
+
+// truyền thêm name="_method" value ="DELETE"
+// truyền thêm name="_token" value ="<?= csrf_token>"
+Route::delete("form", function () {
+    return "Method delete";
+});
+
+// config any method $req = $_Server['request_method'];
+Route::any("any", function (Request $req) {
+    return $req;
+});
+
+// redirect routes
+// Route::redirect("/url_form", "/url_to", 200);
+
+// view
+Route::view("show-view", "viewfe");
+
+// add param url
+
+// Route::get("/get-product/{id}", function ($id) {
+//     return "product của id {$id}";
+// });
+
+Route::get("/get-product/{slug?}-{id?}.html", function ($slug = "", $id = "") {
+    return "Tham số là {$slug}, id là {$id}";
+})->where([
+    'slug' => '[a-z-]+', // Ràng buộc slug chỉ chấp nhận các ký tự từ a-z
+    'id' => '[0-9]+'    // Ràng buộc id chỉ chấp nhận các chữ số từ 0-9
+])->name('tintuc');
+//  call route by name and add params
+//<?= route('tintuc', ['id' => '1', 'slug' => 'tintuc')]>
+
+
+// check view blale
 Route::get('{any}', [HomeController::class, 'index'])->name('index');
 
 // config auth router
