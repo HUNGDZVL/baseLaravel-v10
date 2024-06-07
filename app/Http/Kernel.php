@@ -21,6 +21,10 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
+        // global middleware Laravel (sử dụng trên tất cả requet)
+
+        // \App\Http\Middleware\CheckLoginAdmin::class,
     ];
 
     /**
@@ -38,6 +42,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \App\Http\Middleware\Localization::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // sử dụng bên web web
+            // \App\Http\Middleware\CheckLoginAdmin::class,
 
         ],
 
@@ -45,6 +51,8 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // sử dụng bên  api
+            // \App\Http\Middleware\AuthApi::class,
         ],
     ];
 
@@ -65,6 +73,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'checkpermission' => \App\Http\Middleware\CheckPermission::class,
+
+        // khai báo tên middleware sử dụng trong router
+        // 'checkpermission' => \App\Http\Middleware\CheckPermission::class,
+        'auth.admin' => \App\Http\Middleware\CheckLoginAdmin::class,
+        'auth.admin.login' => \App\Http\Middleware\AuthApi::class
+
     ];
 }

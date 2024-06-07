@@ -177,8 +177,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        // config service providers
-        App\Providers\BaseServiceProvider::class,
+        // config service providers (Khai báo service design patten DI)
+        // App\Providers\BaseServiceProvider::class,
 
     ],
 

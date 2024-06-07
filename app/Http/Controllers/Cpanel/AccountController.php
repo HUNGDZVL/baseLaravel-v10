@@ -10,8 +10,11 @@ class AccountController extends Controller
     //
     public function __construct()
     {
+        // check middleware
     }
     public function index()
     {
+        print_r("oki success");
+        return;
     }
 }

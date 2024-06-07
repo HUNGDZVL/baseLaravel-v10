@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Cpanel\ProductsController;
+use App\Http\Controllers\Cpanel\AccountController;
 use App\Models\User;
 /*
 
@@ -41,6 +44,36 @@ use App\Models\User;
 //     });
 // });
 
+// client routes
+Route::prefix("category")->group(function () {
+    //  index home category
+    Route::get("/", [CategoryController::class, 'index'])->name('category.index');
+
+    // edit
+    Route::get("/edit/{id}", [CategoryController::class, 'edit'])->name('category.edit.id');
+
+    //update
+    Route::post("/update/{id}", [CategoryController::class, 'update'])->name('category.update.id');
+
+    //add
+    Route::get("/add", [CategoryController::class, 'addView'])->name('category.add');
+
+    //add
+    Route::post("/add", [CategoryController::class, 'add']);
+
+
+    //delete
+    Route::post("/delete/{id}", [CategoryController::class, 'delete'])->name('category.delete');
+});
+
+// Định nghĩa route cho resource 'products' trong namespace 'Cpanel'
+Route::middleware('auth.admin')->prefix('cpanel')->group(function () {
+    Route::resource('products', ProductsController::class); // cấu hình route mặc đinh resource controller
+
+    Route::get("account", [AccountController::class, 'index'])->middleware("auth.admin.login")->name("cpanel.account");
+});
+
+// demo options routes
 // test models 
 Route::get('/test', function () {
     // Lấy dữ liệu từ cơ sở dữ liệu mặc định (mysql)
