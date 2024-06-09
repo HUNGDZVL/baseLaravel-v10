@@ -16,7 +16,16 @@ class CheckLoginAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        echo "test Middleware routes ";
+        $path = $request->path(); // Returns 'cpanel/products'
+        echo $path;
+
+        $admin = $request->is("cpanel*"); // This will return true
+        if ($admin) {
+            echo "<h2>Chào admin</h2>";
+        }
+        echo "</br>";
+        echo "test Middleware routes";
+
         return $next($request);
     }
 }

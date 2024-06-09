@@ -45,7 +45,7 @@ use App\Models\User;
 // });
 
 // client routes
-Route::prefix("category")->group(function () {
+Route::middleware('auth.admin')->prefix("category")->group(function () {
     //  index home category
     Route::get("/", [CategoryController::class, 'index'])->name('category.index');
 
@@ -56,10 +56,14 @@ Route::prefix("category")->group(function () {
     Route::post("/update/{id}", [CategoryController::class, 'update'])->name('category.update.id');
 
     //add
-    Route::get("/add", [CategoryController::class, 'addView'])->name('category.add');
+    Route::get("/add", [CategoryController::class, 'addView']);
+
+    // Route::match(['get', 'post'], '/addv2', [CategoryController::class, 'addViewv2'])->name('category.addv2');
+    Route::get("/addv2", [CategoryController::class, 'addViewv2']);
 
     //add
-    Route::post("/add", [CategoryController::class, 'add']);
+    Route::post("/add", [CategoryController::class, 'add'])->name('category.add');
+    Route::post("/addv2", [CategoryController::class, 'addv2'])->name('category.addv2');
 
 
     //delete
@@ -72,7 +76,20 @@ Route::middleware('auth.admin')->prefix('cpanel')->group(function () {
 
     Route::get("account", [AccountController::class, 'index'])->middleware("auth.admin.login")->name("cpanel.account");
 });
+// test view
+Route::get("/view", function () {
+    // cach 1
+    // $data = [
+    //     'title' => 'Tieu de',
+    //     'content' => 'Noi dung'
+    // ];
+    // return view("frontend/view/index", $data);
 
+    //cach 2
+    $title = 'Tieu de';
+    $content = 'Noi dung';
+    return view("frontend/view/index", compact('title', 'content'));
+});
 // demo options routes
 // test models 
 Route::get('/test', function () {
@@ -114,7 +131,7 @@ Route::post("/form", function () {
 
 // truyền thêm name="_method" value ="PUT"
 // truyền thêm name="_token" value ="<?= csrf_token>"
-Route::put("form", function () {
+Route::put("/form", function () {
     // Lấy dữ liệu từ form data
     $name = request('name');
     $email = request('age');
