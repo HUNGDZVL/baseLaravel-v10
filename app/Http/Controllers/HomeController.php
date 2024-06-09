@@ -73,6 +73,7 @@ class HomeController extends Controller
 
 
 
+
     // logic template Admin
 
     public function root()
