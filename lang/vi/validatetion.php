@@ -135,6 +135,10 @@ return [
         'email' => 'địa chỉ email',
         'password' => 'mật khẩu',
         'password_confirmation' => 'xác nhận mật khẩu',
+        'phone' => 'số điện thoại',
+        'address' => 'địa chỉ',
+        'birthdate' => 'ngày sinh',
+        'avatar' => 'ảnh đại diện',
     ],
 
 ];
