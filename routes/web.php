@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Cpanel\ProductsController;
 use App\Http\Controllers\Cpanel\AccountController;
 use App\Models\User;
+use App\Http\Controllers\ViewBaleController;
 /*
 
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//test view controller blale
+Route::get('/blade', [ViewBaleController::class, 'index']);
 
 //Language Translation
 // Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);

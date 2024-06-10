@@ -1,0 +1,1 @@
+<h3>Add view</h3><?php /**PATH D:\baseLaravel-v10\resources\views/frontend/homeblade/add.blade.php ENDPATH**/ ?>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\App;
 
 class CategoryController extends Controller
 {
@@ -27,8 +29,10 @@ class CategoryController extends Controller
         return view("frontend/category/addv2");
     }
 
-    public function add(Request $request)
+    public function add(Request $request, Validator $validator)
     {
+        // Chuyển đổi locale tạm thời sang tiếng Việt
+        App::setLocale('vi');
         // Lấy tất cả dữ liệu gửi từ form
         $data = $request->all();
         // print_r("Data form \n");
@@ -43,6 +47,30 @@ class CategoryController extends Controller
         return redirect($url);
         // Truyền thông báo thành công bằng ->with()
         // return redirect()->route('category.add')->with('message', 'Thêm dữ liệu thành công!');
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'birthdate' => 'nullable|date',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file upload
+            // Thêm các trường và thuộc tính validation khác tùy vào yêu cầu của bạn
+        ]);
+
+        // Thiết lập ngôn ngữ là tiếng Việt cho thông báo lỗi validation
+        $validator->sometimes('*', 'required', function ($input) {
+            return true; // Áp dụng cho tất cả các trường
+        });
+
+        // Kiểm tra nếu validator không hợp lệ
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     }
 
     // http resquest
